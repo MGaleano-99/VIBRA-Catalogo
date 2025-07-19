@@ -1,0 +1,1162 @@
+```html
+    <div class="container mx-auto px-4 relative z-10">
+        <div class="flex justify-between items-center">
+            <div class="text-center flex-1">
+                <div class="relative inline-block">
+                    <h1 class="text-6xl md:text-7xl font-black text-vibra-lime tracking-wider drop-shadow-2xl transform hover:scale-105 transition-transform duration-300">
+                        VIBRA
+                    </h1>
+                    <div class="absolute -bottom-2 left-1/2 transform -translate-x-1/2 w-24 h-1 bg-vibra-pink rounded-full"></div>
+                </div>
+                <p class="text-xl md:text-2xl text-white font-light italic mt-4 tracking-wide drop-shadow-lg">
+                    Deja tu marca en la cancha
+                </p>
+                <div class="flex justify-center items-center gap-2 mt-3">
+                    <div class="w-2 h-2 bg-vibra-lime rounded-full animate-bounce"></div>
+                    <div class="w-2 h-2 bg-vibra-pink rounded-full animate-bounce delay-100"></div>
+                    <div class="w-2 h-2 bg-white rounded-full animate-bounce delay-200"></div>
+                </div>
+            </div>
+            <button onclick="toggleAdmin()" class="bg-vibra-dark hover:bg-opacity-80 w-12 h-12 rounded-full flex items-center justify-center text-xl transition-all duration-300 shadow-lg hover:shadow-xl">
+                ⚙️
+            </button>
+        </div>
+    </div>
+    
+    <!-- Bottom wave decoration -->
+    <div class="absolute bottom-0 left-0 w-full">
+        <svg viewBox="0 0 1200 120" preserveAspectRatio="none" class="w-full h-8 fill-vibra-light">
+            <path d="M0,60 C300,120 900,0 1200,60 L1200,120 L0,120 Z"></path>
+        </svg>
+    </div>
+</header>
+
+<!-- Main Content -->
+<div class="container mx-auto px-4 py-8">
+    <h2 class="text-3xl font-bold text-vibra-dark mb-8 text-center">Nuestros Productos</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6" id="products-grid">
+        <!-- Products will be loaded here -->
+    </div>
+</div>
+
+<!-- Floating Cart Button -->
+<button onclick="toggleCart()" class="fixed bottom-6 right-6 bg-vibra-pink hover:bg-opacity-80 w-16 h-16 rounded-full shadow-lg flex items-center justify-center text-white font-bold text-lg transition-all duration-300 z-40">
+    🛒
+    <span id="cart-count-float" class="absolute -top-2 -right-2 bg-vibra-lime text-vibra-dark text-xs w-6 h-6 rounded-full flex items-center justify-center font-bold">0</span>
+</button>
+
+<!-- Cart Modal -->
+<div id="cart-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-4">
+                <h3 class="text-2xl font-bold text-vibra-dark">Tu Carrito</h3>
+                <button onclick="toggleCart()" class="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center">×</button>
+            </div>
+            <div id="cart-items" class="space-y-4 mb-6">
+                <p class="text-gray-500 text-center py-8">Tu carrito está vacío</p>
+            </div>
+            <div class="border-t pt-4">
+                <div class="flex justify-between items-center text-xl font-bold text-vibra-dark mb-4">
+                    <span>Subtotal:</span>
+                    <span id="cart-subtotal">$0.00</span>
+                </div>
+                <button onclick="proceedToCheckout()" id="checkout-btn" class="w-full bg-vibra-pink text-white py-3 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300 disabled:opacity-50" disabled>
+                    Finalizar Compra
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Checkout Modal -->
+<div id="checkout-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <h3 class="text-2xl font-bold text-vibra-dark mb-6">Información de Envío</h3>
+            <form id="checkout-form" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="text" id="firstName" placeholder="Nombre" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                    <input type="text" id="lastName" placeholder="Apellido" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                </div>
+                <input type="email" id="email" placeholder="Email" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                <input type="text" id="address" placeholder="Dirección" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                <div class="grid grid-cols-3 gap-4">
+                    <input type="text" id="city" placeholder="Ciudad" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                    <input type="text" id="state" placeholder="Estado" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                    <input type="text" id="country" placeholder="País" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                </div>
+                <input type="tel" id="whatsapp" placeholder="WhatsApp (+58...)" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeCheckout()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-all duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 bg-vibra-pink text-white py-3 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300">
+                        Confirmar Pedido
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Ticket Modal -->
+<div id="ticket-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <div class="text-center flex-1">
+                    <h2 class="text-3xl font-bold text-vibra-pink">VIBRA</h2>
+                    <p class="text-vibra-dark italic">Deja tu marca en la cancha</p>
+                    <div class="w-full h-px bg-gray-300 my-4"></div>
+                    <h3 class="text-xl font-bold text-vibra-dark">Ticket de Compra</h3>
+                </div>
+                <button onclick="closeTicket()" class="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center">×</button>
+            </div>
+            
+            <div id="ticket-content" class="space-y-4 mb-6">
+                <!-- Ticket content will be generated here -->
+            </div>
+            
+            <div class="border-t pt-4 space-y-3">
+                <button onclick="sendToWhatsApp()" class="w-full bg-vibra-lime text-vibra-dark py-3 rounded-lg font-bold hover:bg-opacity-80 transition-all duration-300">
+                    📱 Enviar a WhatsApp
+                </button>
+                <button onclick="copyMessage()" class="w-full bg-vibra-blue text-white py-2 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300">
+                    📋 Copiar mensaje
+                </button>
+                <div class="text-center">
+                    <p class="text-xs text-gray-600 mb-2">Si no funciona, usa este enlace:</p>
+                    <a href="https://wa.link/tw8k2p" target="_blank" class="text-vibra-pink text-sm underline hover:no-underline">
+                        https://wa.link/tw8k2p
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Admin Panel Modal -->
+<div id="admin-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-vibra-dark">Panel de Administración</h3>
+                <button onclick="closeAdmin()" class="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center">×</button>
+            </div>
+            
+            <!-- Login Form -->
+            <div id="admin-login" class="space-y-4">
+                <h4 class="text-lg font-semibold text-vibra-dark">Acceso Restringido</h4>
+                <input type="password" id="admin-password" placeholder="Contraseña de administrador" class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none" onkeypress="if(event.key==='Enter') loginAdmin()">
+                <button onclick="loginAdmin()" class="w-full bg-vibra-pink text-white py-3 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300">
+                    Acceder
+                </button>
+            </div>
+
+            <!-- Admin Panel Content -->
+            <div id="admin-content" class="hidden space-y-6">
+                <!-- Tabs -->
+                <div class="flex space-x-4 border-b">
+                    <button onclick="showTab('products')" id="tab-products" class="px-4 py-2 font-semibold text-vibra-pink border-b-2 border-vibra-pink">Productos</button>
+                    <button onclick="showTab('settings')" id="tab-settings" class="px-4 py-2 font-semibold text-gray-600 hover:text-vibra-pink">Configuración</button>
+                </div>
+
+                <!-- Products Tab -->
+                <div id="content-products" class="space-y-4">
+                    <div class="flex justify-between items-center">
+                        <h4 class="text-lg font-semibold text-vibra-dark">Gestión de Productos</h4>
+                        <button onclick="showAddProduct()" class="bg-vibra-lime text-vibra-dark px-4 py-2 rounded-lg font-semibold hover:bg-opacity-80">
+                            + Agregar Producto
+                        </button>
+                    </div>
+                    
+                    <div id="products-list" class="space-y-3 max-h-96 overflow-y-auto">
+                        <!-- Products will be loaded here -->
+                    </div>
+                </div>
+
+                <!-- Settings Tab -->
+                <div id="content-settings" class="hidden space-y-4">
+                    <h4 class="text-lg font-semibold text-vibra-dark">Configuración General</h4>
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Nombre de la Tienda</label>
+                            <input type="text" id="store-name" value="VIBRA" class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Eslogan</label>
+                            <input type="text" id="store-slogan" value="Deja tu marca en la cancha" class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">WhatsApp Link</label>
+                            <input type="text" id="whatsapp-link" value="https://wa.link/tw8k2p" class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Contraseña Admin</label>
+                            <input type="password" id="new-admin-password" placeholder="Nueva contraseña" class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                        </div>
+                    </div>
+                    <div class="flex gap-4">
+                        <button onclick="saveSettings()" class="bg-vibra-pink text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-80">
+                            Guardar Configuración
+                        </button>
+                        <button onclick="resetToDefaults()" class="bg-vibra-dark text-white px-6 py-3 rounded-lg font-semibold hover:bg-opacity-80">
+                            Restaurar Productos Originales
+                        </button>
+                    </div>
+                    
+                    <div class="border-t pt-4 mt-6">
+                        <h5 class="text-md font-semibold text-vibra-dark mb-3">Estado del Almacenamiento</h5>
+                        <div class="bg-gray-50 p-4 rounded-lg">
+                            <p class="text-sm text-gray-600 mb-2">
+                                <strong>Productos guardados:</strong> <span id="saved-products-count">0</span>
+                            </p>
+                            <p class="text-sm text-gray-600 mb-3">
+                                Los cambios se guardan automáticamente y se mantienen al recargar la página.
+                            </p>
+                            <button onclick="checkStorageStatus()" class="bg-vibra-blue text-white px-4 py-2 rounded-lg text-sm hover:bg-opacity-80">
+                                Verificar Estado
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Image Gallery Modal -->
+<div id="gallery-modal" class="fixed inset-0 bg-black bg-opacity-90 z-50 p-4" style="display: none;">
+    <div class="max-w-5xl w-full h-full mx-auto relative flex flex-col">
+        <!-- Close button - more visible -->
+        <button onclick="closeGallery()" class="absolute top-4 right-4 bg-vibra-pink hover:bg-opacity-80 w-12 h-12 rounded-full flex items-center justify-center text-white text-2xl font-bold z-20 shadow-lg">×</button>
+        
+        <div class="bg-white rounded-xl overflow-hidden flex-1 flex flex-col max-h-full">
+            <div class="relative flex-1">
+                <img id="gallery-main-image" src="" alt="" class="w-full h-full max-h-[60vh] object-contain bg-gray-100">
+                
+                <!-- Navigation arrows -->
+                <button id="prev-btn" onclick="previousImage()" class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-vibra-dark bg-opacity-70 hover:bg-opacity-90 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">‹</button>
+                <button id="next-btn" onclick="nextImage()" class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-vibra-dark bg-opacity-70 hover:bg-opacity-90 text-white w-12 h-12 rounded-full flex items-center justify-center text-xl font-bold">›</button>
+            </div>
+            
+            <!-- Thumbnails -->
+            <div id="gallery-thumbnails" class="p-4 bg-gray-50 border-t">
+                <div class="flex gap-2 overflow-x-auto justify-center">
+                    <!-- Thumbnails will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Product info -->
+            <div id="gallery-product-info" class="p-6 border-t bg-white overflow-y-auto">
+                <!-- Product info will be loaded here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Product Form Modal -->
+<div id="product-form-modal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50 p-4">
+    <div class="bg-white rounded-xl max-w-md w-full max-h-[90vh] overflow-y-auto">
+        <div class="p-6">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-xl font-bold text-vibra-dark" id="product-form-title">Agregar Producto</h3>
+                <button onclick="closeProductForm()" class="bg-gray-200 hover:bg-gray-300 w-8 h-8 rounded-full flex items-center justify-center">×</button>
+            </div>
+            
+            <form id="product-form" class="space-y-4">
+                <input type="hidden" id="product-id">
+                <input type="text" id="product-name" placeholder="Nombre del producto" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                <input type="text" id="product-brand" placeholder="Marca" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                <select id="product-level" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                    <option value="">Seleccionar nivel</option>
+                    <option value="Todos">Todos</option>
+                    <option value="Junior">Junior</option>
+                    <option value="Intermedio">Intermedio</option>
+                    <option value="Avanzado">Avanzado</option>
+                    <option value="Profesional">Profesional</option>
+                </select>
+                <input type="text" id="product-material" placeholder="Material" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                <textarea id="product-description" placeholder="Descripción" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none h-20"></textarea>
+                <input type="number" id="product-price" placeholder="Precio" step="0.01" required class="w-full p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none">
+                <div class="space-y-2">
+                    <label class="block text-sm font-medium text-gray-700">Imágenes del Producto</label>
+                    <div id="images-container">
+                        <div class="image-input-group mb-2">
+                            <div class="flex gap-2">
+                                <input type="url" class="product-image-input flex-1 p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none" placeholder="URL de la imagen 1" onchange="previewImages()">
+                                <button type="button" onclick="removeImageInput(this)" class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 hidden">×</button>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="addImageInput()" class="w-full bg-vibra-blue text-white py-2 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300">
+                        + Agregar otra imagen
+                    </button>
+                    <div id="images-preview" class="hidden">
+                        <div class="grid grid-cols-2 gap-2 mt-2">
+                            <!-- Image previews will appear here -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="flex gap-4 pt-4">
+                    <button type="button" onclick="closeProductForm()" class="flex-1 bg-gray-300 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-400 transition-all duration-300">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="flex-1 bg-vibra-pink text-white py-3 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300">
+                        Guardar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    // Default product data
+    const defaultProducts = [
+        { id: 1, name: "Wilson Pro Staff Speed", brand: "Wilson", level: "Profesional", material: "Grafito", description: "Raqueta de alta gama para jugadores avanzados", price: 141.55, images: ["https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-speed-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-speed-2.jpg"] },
+        { id: 2, name: "Wilson Pro Staff V2 Team Alt", brand: "Wilson", level: "Intermedio", material: "Grafito/Aluminio", description: "Perfecta para jugadores en desarrollo", price: 110.93, images: ["https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-v2-team-alt-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-v2-team-alt-2.jpg"] },
+        { id: 3, name: "BULLPADEL INDIGA PWR 2023", brand: "Bullpadel", level: "Avanzado", material: "Carbono", description: "Máxima potencia y control", price: 121.83, images: ["https://i.postimg.cc/Xq5Fy5Qs/bullpadel-indiga-pwr-2023-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/bullpadel-indiga-pwr-2023-2.jpg", "https://i.postimg.cc/Xq5Fy5Qs/bullpadel-indiga-pwr-2023-3.jpg"] },
+        { id: 4, name: "BULLPADEL VERTEX JR BOY 2023", brand: "Bullpadel", level: "Junior", material: "Fibra de vidrio", description: "Diseñada especialmente para jóvenes", price: 121.72, images: ["https://i.postimg.cc/Xq5Fy5Qs/bullpadel-vertex-jr-boy-2023.jpg"] },
+        { id: 5, name: "Wilson Pro Staff Team V2", brand: "Wilson", level: "Intermedio", material: "Grafito", description: "Equilibrio perfecto entre potencia y control", price: 115.17, images: ["https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-team-v2-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-team-v2-2.jpg"] },
+        { id: 6, name: "Bullpadel Raider Power", brand: "Bullpadel", level: "Avanzado", material: "Carbono", description: "Para jugadores que buscan potencia", price: 121.87, images: ["https://i.postimg.cc/Xq5Fy5Qs/bullpadel-raider-power.jpg"] },
+        { id: 7, name: "WILSON PRO STAFF TEAM TX V2", brand: "Wilson", level: "Intermedio", material: "Grafito", description: "Tecnología avanzada para mejor rendimiento", price: 117.48, images: ["https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-team-tx-v2-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-team-tx-v2-2.jpg"] },
+        { id: 8, name: "Bullpadel X-compact 2 Ltd", brand: "Bullpadel", level: "Profesional", material: "Carbono 3K", description: "Edición limitada de alta calidad", price: 130.57, images: ["https://i.postimg.cc/Xq5Fy5Qs/bullpadel-x-compact-2-ltd-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/bullpadel-x-compact-2-ltd-2.jpg", "https://i.postimg.cc/Xq5Fy5Qs/bullpadel-x-compact-2-ltd-3.jpg"] },
+        { id: 9, name: "Wilson Pro Staff Team BKRD", brand: "Wilson", level: "Intermedio", material: "Grafito", description: "Diseño elegante y funcional", price: 112.99, images: ["https://i.postimg.cc/Xq5Fy5Qs/wilson-pro-staff-team-bkrd.jpg"] },
+        { id: 10, name: "Wilson Fierce Elite 2", brand: "Wilson", level: "Avanzado", material: "Grafito", description: "Para jugadores competitivos", price: 126.92, images: ["https://i.postimg.cc/Xq5Fy5Qs/wilson-fierce-elite-2-1.jpg", "https://i.postimg.cc/Xq5Fy5Qs/wilson-fierce-elite-2-2.jpg"] },
+        { id: 11, name: "Overgrip Colores Neon", brand: "VIBRA", level: "Todos", material: "PU", description: "Disponible en rosa, naranja, blanco, negro, amarillo, morado, azul", price: 4.00, images: ["https://i.postimg.cc/Xq5Fy5Qs/overgrip-colores-neon.jpg"] },
+        { id: 12, name: "Tubo 3 Pelotas Wilson", brand: "Wilson", level: "Todos", material: "Fieltro", description: "Pelotas oficiales de alta calidad", price: 13.00, images: ["https://i.postimg.cc/Xq5Fy5Qs/tubo-3-pelotas-wilson.jpg"] },
+        { id: 13, name: "Tubo 3 Pelotas Bullpadel", brand: "Bullpadel", level: "Todos", material: "Fieltro", description: "Pelotas profesionales", price: 13.00, images: ["https://i.postimg.cc/Xq5Fy5Qs/tubo-3-pelotas-bullpadel.jpg"] },
+        { id: 14, name: "Overgrip + Protector Borde", brand: "VIBRA", level: "Todos", material: "PU/Plástico", description: "Kit completo de protección", price: 7.00, images: ["https://i.postimg.cc/Xq5Fy5Qs/overgrip-protector-borde.jpg"] }
+    ];
+
+    // Load products from localStorage or use defaults
+    let products = loadProductsFromStorage();
+
+    let cart = [];
+    let adminPassword = 'vibra2024';
+    let isAdminLoggedIn = false;
+    let editingProductId = null;
+    let currentGalleryProduct = null;
+    let currentImageIndex = 0;
+    let storeSettings = {
+        name: 'VIBRA',
+        slogan: 'Deja tu marca en la cancha',
+        whatsappLink: 'https://wa.link/tw8k2p'
+    };
+
+    // Storage functions
+    function saveProductsToStorage() {
+        try {
+            localStorage.setItem('vibra_products', JSON.stringify(products));
+            console.log('Productos guardados exitosamente');
+        } catch (error) {
+            console.error('Error al guardar productos:', error);
+        }
+    }
+
+    function loadProductsFromStorage() {
+        try {
+            const savedProducts = localStorage.getItem('vibra_products');
+            if (savedProducts) {
+                const parsedProducts = JSON.parse(savedProducts);
+                console.log('Productos cargados desde almacenamiento');
+                return parsedProducts;
+            }
+        } catch (error) {
+            console.error('Error al cargar productos:', error);
+        }
+        console.log('Usando productos por defecto');
+        return [...defaultProducts];
+    }
+
+    // Helper functions for images
+    function getProductMainImage(product) {
+        if (product.images && product.images.length > 0) {
+            return product.images[0];
+        }
+        return product.image || 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=300&fit=crop&crop=center';
+    }
+
+    function getProductImageCount(product) {
+        if (product.images && product.images.length > 0) {
+            return product.images.length;
+        }
+        return product.image ? 1 : 0;
+    }
+
+    function getAllProductImages(product) {
+        if (product.images && product.images.length > 0) {
+            return product.images;
+        }
+        return product.image ? [product.image] : ['https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop&crop=center'];
+    }
+
+    // Load products
+    function loadProducts() {
+        const grid = document.getElementById('products-grid');
+        grid.innerHTML = products.map(product => `
+            <div class="bg-white rounded-xl shadow-lg overflow-hidden card-hover">
+                <div class="relative h-48 bg-gray-100 cursor-pointer" onclick="openGallery(${product.id})">
+                    <img src="${getProductMainImage(product)}" 
+                         alt="${product.name}" 
+                         class="w-full h-full object-cover"
+                         onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=300&fit=crop&crop=center'">
+                    <div class="absolute top-3 left-3 right-3 flex justify-between items-start">
+                        <span class="bg-vibra-blue text-vibra-dark px-3 py-1 rounded-full text-sm font-semibold">${product.brand}</span>
+                        <span class="bg-vibra-lime text-vibra-dark px-3 py-1 rounded-full text-sm font-semibold">${product.level}</span>
+                    </div>
+                    ${getProductImageCount(product) > 1 ? `<div class="absolute bottom-3 right-3 bg-black bg-opacity-60 text-white px-2 py-1 rounded-full text-xs">📷 ${getProductImageCount(product)}</div>` : ''}
+                    <div class="absolute inset-0 bg-black bg-opacity-0 hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center">
+                        <span class="text-white opacity-0 hover:opacity-100 transition-opacity duration-300 text-sm font-semibold">👁️ Ver fotos</span>
+                    </div>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-lg font-bold text-vibra-dark mb-2">${product.name}</h3>
+                    <p class="text-sm text-gray-600 mb-2"><strong>Material:</strong> ${product.material}</p>
+                    <p class="text-sm text-gray-600 mb-4">${product.description}</p>
+                    <div class="flex justify-between items-center">
+                        <span class="text-2xl font-bold text-vibra-pink">$${product.price.toFixed(2)}</span>
+                        <button onclick="addToCart(${product.id})" class="bg-vibra-dark text-white px-4 py-2 rounded-lg hover:bg-opacity-80 transition-all duration-300">
+                            Agregar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    // Cart functions
+    function addToCart(productId) {
+        const product = products.find(p => p.id === productId);
+        const existingItem = cart.find(item => item.id === productId);
+        
+        if (existingItem) {
+            existingItem.quantity += 1;
+        } else {
+            cart.push({ ...product, quantity: 1 });
+        }
+        
+        updateCart();
+    }
+
+    function removeFromCart(productId) {
+        cart = cart.filter(item => item.id !== productId);
+        updateCart();
+    }
+
+    function updateQuantity(productId, change) {
+        const item = cart.find(item => item.id === productId);
+        if (item) {
+            item.quantity += change;
+            if (item.quantity <= 0) {
+                removeFromCart(productId);
+            } else {
+                updateCart();
+            }
+        }
+    }
+
+    function updateCart() {
+        const cartItems = document.getElementById('cart-items');
+        const cartSubtotal = document.getElementById('cart-subtotal');
+        const checkoutBtn = document.getElementById('checkout-btn');
+        
+        const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        // Update floating cart counter
+        const floatCounter = document.getElementById('cart-count-float');
+        if (floatCounter) {
+            floatCounter.textContent = totalItems;
+        }
+        
+        if (cartSubtotal) {
+            cartSubtotal.textContent = `$${subtotal.toFixed(2)}`;
+        }
+        
+        if (cart.length === 0) {
+            if (cartItems) {
+                cartItems.innerHTML = '<p class="text-gray-500 text-center py-8">Tu carrito está vacío</p>';
+            }
+            if (checkoutBtn) {
+                checkoutBtn.disabled = true;
+            }
+        } else {
+            if (cartItems) {
+                cartItems.innerHTML = cart.map(item => `
+                    <div class="flex items-center justify-between bg-gray-50 p-4 rounded-lg">
+                        <div class="flex-1">
+                            <h4 class="font-semibold text-vibra-dark">${item.name}</h4>
+                            <p class="text-sm text-gray-600">$${item.price.toFixed(2)} c/u</p>
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <button onclick="updateQuantity(${item.id}, -1)" class="bg-vibra-blue text-vibra-dark w-8 h-8 rounded-full hover:bg-opacity-80">-</button>
+                            <span class="font-semibold">${item.quantity}</span>
+                            <button onclick="updateQuantity(${item.id}, 1)" class="bg-vibra-blue text-vibra-dark w-8 h-8 rounded-full hover:bg-opacity-80">+</button>
+                            <button onclick="removeFromCart(${item.id})" class="bg-vibra-pink text-white w-8 h-8 rounded-full hover:bg-opacity-80 ml-2">×</button>
+                        </div>
+                    </div>
+                `).join('');
+            }
+            if (checkoutBtn) {
+                checkoutBtn.disabled = false;
+            }
+        }
+    }
+
+    function toggleCart() {
+        const cartModal = document.getElementById('cart-modal');
+        if (cartModal.classList.contains('hidden')) {
+            cartModal.classList.remove('hidden');
+            cartModal.classList.add('flex');
+        } else {
+            cartModal.classList.add('hidden');
+            cartModal.classList.remove('flex');
+        }
+    }
+
+    function proceedToCheckout() {
+        // Close cart modal first
+        toggleCart();
+        // Open checkout modal
+        document.getElementById('checkout-modal').classList.remove('hidden');
+        document.getElementById('checkout-modal').classList.add('flex');
+    }
+
+    function closeCheckout() {
+        document.getElementById('checkout-modal').classList.add('hidden');
+        document.getElementById('checkout-modal').classList.remove('flex');
+    }
+
+    function closeTicket() {
+        document.getElementById('ticket-modal').classList.add('hidden');
+        document.getElementById('ticket-modal').classList.remove('flex');
+    }
+
+    // Gallery functions
+    function openGallery(productId) {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+        
+        currentGalleryProduct = product;
+        currentImageIndex = 0;
+        
+        const galleryModal = document.getElementById('gallery-modal');
+        const mainImage = document.getElementById('gallery-main-image');
+        const thumbnails = document.getElementById('gallery-thumbnails');
+        const productInfo = document.getElementById('gallery-product-info');
+        
+        const images = getAllProductImages(product);
+        
+        // Set main image
+        mainImage.src = images[0];
+        mainImage.alt = product.name;
+        
+        // Create thumbnails
+        thumbnails.innerHTML = `
+            <div class="flex gap-2 overflow-x-auto">
+                ${images.map((img, index) => `
+                    <img src="${img}" 
+                         alt="${product.name} ${index + 1}" 
+                         class="w-16 h-16 object-cover rounded-lg cursor-pointer border-2 ${index === 0 ? 'border-vibra-pink' : 'border-gray-300'} hover:border-vibra-blue transition-all duration-300"
+                         onclick="selectImage(${index})">
+                `).join('')}
+            </div>
+        `;
+        
+        // Set product info
+        productInfo.innerHTML = `
+            <div class="flex justify-between items-start mb-4">
+                <div class="flex-1">
+                    <h3 class="text-2xl font-bold text-vibra-dark mb-2">${product.name}</h3>
+                    <div class="flex gap-2 mb-3">
+                        <span class="bg-vibra-blue text-vibra-dark px-3 py-1 rounded-full text-sm font-semibold">${product.brand}</span>
+                        <span class="bg-vibra-lime text-vibra-dark px-3 py-1 rounded-full text-sm font-semibold">${product.level}</span>
+                    </div>
+                    <p class="text-gray-600 mb-2"><strong>Material:</strong> ${product.material}</p>
+                    <p class="text-gray-600 mb-4">${product.description}</p>
+                </div>
+                <div class="text-right">
+                    <span class="text-3xl font-bold text-vibra-pink">$${product.price.toFixed(2)}</span>
+                </div>
+            </div>
+            <button onclick="addToCart(${product.id}); closeGallery();" class="w-full bg-vibra-dark text-white py-3 rounded-lg font-semibold hover:bg-opacity-80 transition-all duration-300">
+                Agregar al Carrito
+            </button>
+        `;
+        
+        // Show/hide navigation arrows
+        updateNavigationButtons(images.length);
+        
+        galleryModal.style.display = 'block';
+    }
+
+    function closeGallery() {
+        const galleryModal = document.getElementById('gallery-modal');
+        galleryModal.style.display = 'none';
+        currentGalleryProduct = null;
+        currentImageIndex = 0;
+    }
+
+    function selectImage(index) {
+        if (!currentGalleryProduct) return;
+        
+        currentImageIndex = index;
+        const images = getAllProductImages(currentGalleryProduct);
+        const mainImage = document.getElementById('gallery-main-image');
+        
+        mainImage.src = images[index];
+        
+        // Update thumbnail borders
+        const thumbnails = document.querySelectorAll('#gallery-thumbnails img');
+        thumbnails.forEach((thumb, i) => {
+            if (i === index) {
+                thumb.classList.remove('border-gray-300');
+                thumb.classList.add('border-vibra-pink');
+            } else {
+                thumb.classList.remove('border-vibra-pink');
+                thumb.classList.add('border-gray-300');
+            }
+        });
+    }
+
+    function previousImage() {
+        if (!currentGalleryProduct) return;
+        
+        const images = getAllProductImages(currentGalleryProduct);
+        currentImageIndex = currentImageIndex > 0 ? currentImageIndex - 1 : images.length - 1;
+        selectImage(currentImageIndex);
+    }
+
+    function nextImage() {
+        if (!currentGalleryProduct) return;
+        
+        const images = getAllProductImages(currentGalleryProduct);
+        currentImageIndex = currentImageIndex < images.length - 1 ? currentImageIndex + 1 : 0;
+        selectImage(currentImageIndex);
+    }
+
+    function updateNavigationButtons(imageCount) {
+        const prevBtn = document.getElementById('prev-btn');
+        const nextBtn = document.getElementById('next-btn');
+        
+        if (imageCount <= 1) {
+            prevBtn.style.display = 'none';
+            nextBtn.style.display = 'none';
+        } else {
+            prevBtn.style.display = 'flex';
+            nextBtn.style.display = 'flex';
+        }
+    }
+
+    // Checkout form
+    document.getElementById('checkout-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            firstName: document.getElementById('firstName').value,
+            lastName: document.getElementById('lastName').value,
+            email: document.getElementById('email').value,
+            address: document.getElementById('address').value,
+            city: document.getElementById('city').value,
+            state: document.getElementById('state').value,
+            country: document.getElementById('country').value,
+            whatsapp: document.getElementById('whatsapp').value
+        };
+        
+        generateTicket(formData);
+        closeCheckout();
+        
+        document.getElementById('ticket-modal').classList.remove('hidden');
+        document.getElementById('ticket-modal').classList.add('flex');
+    });
+
+    function generateTicket(customerData) {
+        const ticketContent = document.getElementById('ticket-content');
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        ticketContent.innerHTML = `
+            <div class="space-y-3">
+                <div>
+                    <h4 class="font-semibold text-vibra-dark">Cliente:</h4>
+                    <p class="text-sm">${customerData.firstName} ${customerData.lastName}</p>
+                    <p class="text-sm">${customerData.email}</p>
+                    <p class="text-sm">${customerData.whatsapp}</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-vibra-dark">Dirección de Envío:</h4>
+                    <p class="text-sm">${customerData.address}</p>
+                    <p class="text-sm">${customerData.city}, ${customerData.state}</p>
+                    <p class="text-sm">${customerData.country}</p>
+                </div>
+                
+                <div>
+                    <h4 class="font-semibold text-vibra-dark">Productos:</h4>
+                    ${cart.map(item => `
+                        <div class="flex justify-between text-sm py-1">
+                            <span>${item.name} x${item.quantity}</span>
+                            <span>$${(item.price * item.quantity).toFixed(2)}</span>
+                        </div>
+                    `).join('')}
+                </div>
+                
+                <div class="border-t pt-2">
+                    <div class="flex justify-between font-bold text-lg">
+                        <span>Total:</span>
+                        <span class="text-vibra-pink">$${subtotal.toFixed(2)}</span>
+                    </div>
+                </div>
+            </div>
+        `;
+    }
+
+    function sendToWhatsApp() {
+        // Try opening WhatsApp with the message
+        const message = generateWhatsAppMessage();
+        const encodedMessage = encodeURIComponent(message);
+        const whatsappUrl = `https://wa.me/?text=${encodedMessage}`;
+        
+        // Try to open WhatsApp
+        try {
+            window.open(whatsappUrl, '_blank');
+        } catch (error) {
+            // If that fails, try the direct link
+            window.open('https://wa.link/tw8k2p', '_blank');
+        }
+    }
+
+    function copyMessage() {
+        const message = generateWhatsAppMessage();
+        
+        // Try to copy to clipboard
+        if (navigator.clipboard) {
+            navigator.clipboard.writeText(message).then(() => {
+                alert('¡Mensaje copiado! Ahora puedes pegarlo en WhatsApp');
+            }).catch(() => {
+                // Fallback for older browsers
+                copyToClipboardFallback(message);
+            });
+        } else {
+            copyToClipboardFallback(message);
+        }
+    }
+
+    function copyToClipboardFallback(text) {
+        const textArea = document.createElement('textarea');
+        textArea.value = text;
+        document.body.appendChild(textArea);
+        textArea.select();
+        try {
+            document.execCommand('copy');
+            alert('¡Mensaje copiado! Ahora puedes pegarlo en WhatsApp');
+        } catch (err) {
+            alert('No se pudo copiar automáticamente. Por favor copia manualmente el mensaje del ticket.');
+        }
+        document.body.removeChild(textArea);
+    }
+
+    function generateWhatsAppMessage() {
+        const customerData = getCurrentCustomerData();
+        const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+        
+        let message = `🏆 *VIBRA - Nuevo Pedido* 🏆\n\n`;
+        message += `👤 *Cliente:*\n`;
+        message += `${customerData.firstName} ${customerData.lastName}\n`;
+        message += `📧 ${customerData.email}\n`;
+        message += `📱 ${customerData.whatsapp}\n\n`;
+        
+        message += `📍 *Dirección de Envío:*\n`;
+        message += `${customerData.address}\n`;
+        message += `${customerData.city}, ${customerData.state}\n`;
+        message += `${customerData.country}\n\n`;
+        
+        message += `🛒 *Productos:*\n`;
+        cart.forEach(item => {
+            message += `• ${item.name} x${item.quantity} - $${(item.price * item.quantity).toFixed(2)}\n`;
+        });
+        
+        message += `\n💰 *Total: $${subtotal.toFixed(2)}*\n\n`;
+        message += `¡Gracias por tu pedido! 🎾`;
+        
+        return message;
+    }
+
+    function getCurrentCustomerData() {
+        return {
+            firstName: document.getElementById('firstName').value || 'N/A',
+            lastName: document.getElementById('lastName').value || 'N/A',
+            email: document.getElementById('email').value || 'N/A',
+            address: document.getElementById('address').value || 'N/A',
+            city: document.getElementById('city').value || 'N/A',
+            state: document.getElementById('state').value || 'N/A',
+            country: document.getElementById('country').value || 'N/A',
+            whatsapp: document.getElementById('whatsapp').value || 'N/A'
+        };
+    }
+
+    // Admin Functions
+    function toggleAdmin() {
+        const adminModal = document.getElementById('admin-modal');
+        adminModal.classList.remove('hidden');
+        adminModal.classList.add('flex');
+        
+        if (isAdminLoggedIn) {
+            document.getElementById('admin-login').classList.add('hidden');
+            document.getElementById('admin-content').classList.remove('hidden');
+            loadAdminProducts();
+        } else {
+            document.getElementById('admin-login').classList.remove('hidden');
+            document.getElementById('admin-content').classList.add('hidden');
+        }
+    }
+
+    function closeAdmin() {
+        document.getElementById('admin-modal').classList.add('hidden');
+        document.getElementById('admin-modal').classList.remove('flex');
+    }
+
+    function loginAdmin() {
+        const password = document.getElementById('admin-password').value;
+        console.log('Intentando login con contraseña:', password);
+        console.log('Contraseña correcta:', adminPassword);
+        
+        if (password === adminPassword) {
+            isAdminLoggedIn = true;
+            const loginDiv = document.getElementById('admin-login');
+            const contentDiv = document.getElementById('admin-content');
+            
+            if (loginDiv) loginDiv.classList.add('hidden');
+            if (contentDiv) contentDiv.classList.remove('hidden');
+            
+            loadAdminProducts();
+            document.getElementById('admin-password').value = '';
+            console.log('Login exitoso');
+        } else {
+            alert('Contraseña incorrecta. La contraseña es: vibra2024');
+            console.log('Login fallido');
+        }
+    }
+
+    function showTab(tabName) {
+        // Hide all tabs
+        document.getElementById('content-products').classList.add('hidden');
+        document.getElementById('content-settings').classList.add('hidden');
+        
+        // Remove active class from all tab buttons
+        document.getElementById('tab-products').classList.remove('text-vibra-pink', 'border-vibra-pink');
+        document.getElementById('tab-products').classList.add('text-gray-600');
+        document.getElementById('tab-settings').classList.remove('text-vibra-pink', 'border-vibra-pink');
+        document.getElementById('tab-settings').classList.add('text-gray-600');
+        
+        // Show selected tab
+        document.getElementById('content-' + tabName).classList.remove('hidden');
+        document.getElementById('tab-' + tabName).classList.add('text-vibra-pink', 'border-b-2', 'border-vibra-pink');
+        document.getElementById('tab-' + tabName).classList.remove('text-gray-600');
+    }
+
+    function loadAdminProducts() {
+        const productsList = document.getElementById('products-list');
+        productsList.innerHTML = products.map(product => `
+            <div class="bg-gray-50 p-4 rounded-lg flex justify-between items-center">
+                <div class="flex items-center gap-4 flex-1">
+                    <div class="relative">
+                        <img src="${getProductMainImage(product)}" 
+                             alt="${product.name}" 
+                             class="w-16 h-16 object-cover rounded-lg"
+                             onerror="this.src='https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=300&h=300&fit=crop&crop=center'">
+                        ${getProductImageCount(product) > 1 ? `<div class="absolute -top-1 -right-1 bg-vibra-pink text-white text-xs w-5 h-5 rounded-full flex items-center justify-center">${getProductImageCount(product)}</div>` : ''}
+                    </div>
+                    <div>
+                        <h5 class="font-semibold text-vibra-dark">${product.name}</h5>
+                        <p class="text-sm text-gray-600">${product.brand} - $${product.price.toFixed(2)}</p>
+                    </div>
+                </div>
+                <div class="flex gap-2">
+                    <button onclick="editProduct(${product.id})" class="bg-vibra-blue text-white px-3 py-1 rounded text-sm hover:bg-opacity-80">
+                        Editar
+                    </button>
+                    <button onclick="deleteProduct(${product.id})" class="bg-vibra-pink text-white px-3 py-1 rounded text-sm hover:bg-opacity-80">
+                        Eliminar
+                    </button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function showAddProduct() {
+        editingProductId = null;
+        document.getElementById('product-form-title').textContent = 'Agregar Producto';
+        document.getElementById('product-form').reset();
+        document.getElementById('product-form-modal').classList.remove('hidden');
+        document.getElementById('product-form-modal').classList.add('flex');
+    }
+
+    function editProduct(productId) {
+        const product = products.find(p => p.id === productId);
+        if (product) {
+            editingProductId = productId;
+            document.getElementById('product-form-title').textContent = 'Editar Producto';
+            document.getElementById('product-id').value = product.id;
+            document.getElementById('product-name').value = product.name;
+            document.getElementById('product-brand').value = product.brand;
+            document.getElementById('product-level').value = product.level;
+            document.getElementById('product-material').value = product.material;
+            document.getElementById('product-description').value = product.description;
+            document.getElementById('product-price').value = product.price;
+            
+            // Load existing images
+            loadProductImages(product);
+            
+            document.getElementById('product-form-modal').classList.remove('hidden');
+            document.getElementById('product-form-modal').classList.add('flex');
+        }
+    }
+
+    function deleteProduct(productId) {
+        if (confirm('¿Estás seguro de que quieres eliminar este producto?')) {
+            const index = products.findIndex(p => p.id === productId);
+            if (index > -1) {
+                products.splice(index, 1);
+                saveProductsToStorage(); // Guardar cambios
+                loadProducts();
+                loadAdminProducts();
+            }
+        }
+    }
+
+    function closeProductForm() {
+        document.getElementById('product-form-modal').classList.add('hidden');
+        document.getElementById('product-form-modal').classList.remove('flex');
+        // Reset images form
+        resetImagesForm();
+    }
+
+    function addImageInput() {
+        const container = document.getElementById('images-container');
+        const currentInputs = container.querySelectorAll('.image-input-group').length;
+        
+        const newInputGroup = document.createElement('div');
+        newInputGroup.className = 'image-input-group mb-2';
+        newInputGroup.innerHTML = `
+            <div class="flex gap-2">
+                <input type="url" class="product-image-input flex-1 p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none" placeholder="URL de la imagen ${currentInputs + 1}" onchange="previewImages()">
+                <button type="button" onclick="removeImageInput(this)" class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600">×</button>
+            </div>
+        `;
+        
+        container.appendChild(newInputGroup);
+        
+        // Show remove buttons for all inputs except the first one
+        updateRemoveButtons();
+    }
+
+    function removeImageInput(button) {
+        const inputGroup = button.closest('.image-input-group');
+        inputGroup.remove();
+        
+        // Update placeholders and remove buttons
+        updateImageInputs();
+        previewImages();
+    }
+
+    function updateImageInputs() {
+        const inputs = document.querySelectorAll('.product-image-input');
+        inputs.forEach((input, index) => {
+            input.placeholder = `URL de la imagen ${index + 1}`;
+        });
+        updateRemoveButtons();
+    }
+
+    function updateRemoveButtons() {
+        const removeButtons = document.querySelectorAll('#images-container .bg-red-500');
+        const inputGroups = document.querySelectorAll('.image-input-group');
+        
+        removeButtons.forEach((button, index) => {
+            if (inputGroups.length === 1) {
+                button.classList.add('hidden');
+            } else {
+                button.classList.remove('hidden');
+            }
+        });
+    }
+
+    function resetImagesForm() {
+        const container = document.getElementById('images-container');
+        container.innerHTML = `
+            <div class="image-input-group mb-2">
+                <div class="flex gap-2">
+                    <input type="url" class="product-image-input flex-1 p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none" placeholder="URL de la imagen 1" onchange="previewImages()">
+                    <button type="button" onclick="removeImageInput(this)" class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 hidden">×</button>
+                </div>
+            </div>
+        `;
+        document.getElementById('images-preview').classList.add('hidden');
+    }
+
+    function loadProductImages(product) {
+        resetImagesForm();
+        
+        const images = getAllProductImages(product);
+        const container = document.getElementById('images-container');
+        
+        // Clear container
+        container.innerHTML = '';
+        
+        // Add input for each existing image
+        images.forEach((imageUrl, index) => {
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'image-input-group mb-2';
+            inputGroup.innerHTML = `
+                <div class="flex gap-2">
+                    <input type="url" class="product-image-input flex-1 p-3 border border-gray-300 rounded-lg focus:border-vibra-blue focus:outline-none" placeholder="URL de la imagen ${index + 1}" value="${imageUrl}" onchange="previewImages()">
+                    <button type="button" onclick="removeImageInput(this)" class="bg-red-500 text-white px-3 py-2 rounded-lg hover:bg-red-600 ${index === 0 && images.length === 1 ? 'hidden' : ''}">×</button>
+                </div>
+            `;
+            container.appendChild(inputGroup);
+        });
+        
+        updateRemoveButtons();
+        previewImages();
+    }
+
+    function previewImages() {
+        const inputs = document.querySelectorAll('.product-image-input');
+        const preview = document.getElementById('images-preview');
+        const previewContainer = preview.querySelector('.grid');
+        
+        const imageUrls = Array.from(inputs)
+            .map(input => input.value.trim())
+            .filter(url => url !== '');
+        
+        if (imageUrls.length === 0) {
+            preview.classList.add('hidden');
+            return;
+        }
+        
+        previewContainer.innerHTML = imageUrls.map((url, index) => `
+            <div class="relative">
+                <img src="${url}" alt="Vista previa ${index + 1}" class="w-full h-24 object-cover rounded-lg border" onerror="this.parentElement.style.display='none'">
+                <div class="absolute top-1 right-1 bg-black bg-opacity-60 text-white text-xs px-1 rounded">${index + 1}</div>
+            </div>
+        `).join('');
+        
+        preview.classList.remove('hidden');
+    }
+
+    function saveSettings() {
+        storeSettings.name = document.getElementById('store-name').value;
+        storeSettings.slogan = document.getElementById('store-slogan').value;
+        storeSettings.whatsappLink = document.getElementById('whatsapp-link').value;
+        
+        const newPassword = document.getElementById('new-admin-password').value;
+        if (newPassword) {
+            adminPassword = newPassword;
+            document.getElementById('new-admin-password').value = '';
+        }
+        
+        // Update header
+        document.querySelector('h1').textContent = storeSettings.name;
+        document.querySelector('.italic').textContent = storeSettings.slogan;
+        
+        alert('Configuración guardada exitosamente');
+    }
+
+    function resetToDefaults() {
+        if (confirm('¿Estás seguro? Esto restaurará todos los productos a su estado original y eliminará las imágenes personalizadas que hayas agregado.')) {
+            products.length = 0; // Clear current products
+            products.push(...defaultProducts); // Add default products
+            saveProductsToStorage(); // Save to storage
+            loadProducts();
+            loadAdminProducts();
+            checkStorageStatus();
+            alert('Productos restaurados a su estado original');
+        }
+    }
+
+    function checkStorageStatus() {
+        const savedProducts = localStorage.getItem('vibra_products');
+        const count = savedProducts ? JSON.parse(savedProducts).length : 0;
+        document.getElementById('saved-products-count').textContent = count;
+        
+        if (count > 0) {
+            console.log(`${count} productos guardados en el navegador`);
+        } else {
+            console.log('No hay productos guardados, usando valores por defecto');
+        }
+    }
+
+    // Product form submission
+    document.getElementById('product-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        // Get all image URLs
+        const imageInputs = document.querySelectorAll('.product-image-input');
+        const images = Array.from(imageInputs)
+            .map(input => input.value.trim())
+            .filter(url => url !== '');
+        
+        const productData = {
+            name: document.getElementById('product-name').value,
+            brand: document.getElementById('product-brand').value,
+            level: document.getElementById('product-level').value,
+            material: document.getElementById('product-material').value,
+            description: document.getElementById('product-description').value,
+            price: parseFloat(document.getElementById('product-price').value),
+            images: images.length > 0 ? images : ['https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=600&h=600&fit=crop&crop=center']
+        };
+        
+        if (editingProductId) {
+            // Edit existing product
+            const index = products.findIndex(p => p.id === editingProductId);
+            if (index > -1) {
+                products[index] = { ...products[index], ...productData };
+            }
+        } else {
+            // Add new product
+            const newId = Math.max(...products.map(p => p.id)) + 1;
+            products.push({ id: newId, ...productData });
+        }
+        
+        saveProductsToStorage(); // Guardar cambios automáticamente
+        loadProducts();
+        loadAdminProducts();
+        closeProductForm();
+        
+        // Mostrar confirmación
+        alert('Producto guardado exitosamente. Los cambios se mantienen al recargar la página.');
+    });
+
+    // Keyboard navigation for gallery
+    document.addEventListener('keydown', function(e) {
+        const galleryModal = document.getElementById('gallery-modal');
+        if (galleryModal.style.display === 'block') {
+            if (e.key === 'Escape') {
+                closeGallery();
+            } else if (e.key === 'ArrowLeft') {
+                previousImage();
+            } else if (e.key === 'ArrowRight') {
+                nextImage();
+            }
+        }
+    });
+
+    // Close gallery when clicking outside the content
+    document.getElementById('gallery-modal').addEventListener('click', function(e) {
+        if (e.target === this) {
+            closeGallery();
+        }
+    });
+
+    // Initialize
+    loadProducts();
+    
+    // Initialize storage status when admin panel opens
+    document.addEventListener('DOMContentLoaded', function() {
+        checkStorageStatus();
+    });
+</script>
